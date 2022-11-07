@@ -22,18 +22,19 @@ pyplot.savefig("scatterplot.png")
 pyplot.close()
 
 def run_kmeans(n, dataset):
+  print("Running kmeans with n=", n)
   machine = KMeans(n_clusters=n)
   machine.fit(dataset)
   results = machine.predict(dataset)
   centroids = machine.cluster_centers_
   ssd = machine.inertia_
   if n > 1:
-    silhouette = silhouette_score(dataset, machine.labels_, metric="euclidean")
+    silhouette = silhouette_score(dataset, results, metric="euclidean")
   else:
     silhouette = 0
   pyplot.scatter(dataset[:,0], dataset[:,1], c=results)
   pyplot.scatter(centroids[:,0], centroids[:,1], c='red', marker="*", s = 200)
-  pyplot.savefig("scatterplot_kmean_" + str(n) + ".png")
+  pyplot.savefig("scatterplot_kmeans_" + str(n) + ".png")
   pyplot.close()
   return ssd, silhouette
 
@@ -59,13 +60,14 @@ print(silhouette_result.index(max(silhouette_result))+2)
 
 
 def run_kmedoids(n, dataset):
+  print("Running kmedoids with n=", n)
   machine = KMedoids(n_clusters=n)
   machine.fit(dataset)
   results = machine.predict(dataset)
   centroids = machine.cluster_centers_
   ssd = machine.inertia_
   if n > 1:
-    silhouette = silhouette_score(dataset, machine.labels_, metric="euclidean")
+    silhouette = silhouette_score(dataset, results, metric="euclidean")
   else:
     silhouette = 0
   pyplot.scatter(dataset[:,0], dataset[:,1], c=results)
